@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" id="inp">
+<button id="record">
+    submit
+</button>
+    <script>
+        // let host = new WebSocket('ws://' + window.location.host + '/ws/');
+        let socket = new WebSocket('ws://' + window.location.host + '/ws/');
+        let timer = 1000;
+        socket.onmessage = function (evt) {
+          var received_msg = String(evt.data);
+          console.log('backend return:' + received_msg);
+        };
+        socket.onopen = (evt) => {
+            //timer = setInterval(() => {
+            //    socket.send('hello');
+            //}, 1000);
+            console.log(socket);
+        };
+        socket.onclose = socket.onerror = () => {
+            clearInterval(timer);
+        };
+        $('#record').click(function(){
+            var i = $('#inp').val();
+            console.log("socket send: "+ String(i));
+            socket.send(i);
+        })
+    </script>
+</body>
+</html>
